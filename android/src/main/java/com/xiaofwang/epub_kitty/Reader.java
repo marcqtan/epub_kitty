@@ -25,6 +25,13 @@ import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodChannel;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.readium.r2.shared.Locations;
+
 public class Reader  implements OnHighlightListener, ReadLocatorListener, FolioReader.OnClosedListener{
 
     private ReaderConfig readerConfig;
@@ -33,11 +40,13 @@ public class Reader  implements OnHighlightListener, ReadLocatorListener, FolioR
     public MethodChannel.Result result;
     private EventChannel.EventSink pageEventSink;
     private BinaryMessenger messenger;
+    private String identifier;
 
     private static final String PAGE_CHANNEL = "com.xiaofwang.epub_reader/page";
 
-    Reader(Context context, BinaryMessenger messenger,ReaderConfig config){
+    Reader(Context context, BinaryMessenger messenger,ReaderConfig config, String identifier){
         this.context = context;
+        this.identifier = identifier;
         readerConfig = config;
         getHighlightsAndSave();
 
@@ -51,8 +60,20 @@ public class Reader  implements OnHighlightListener, ReadLocatorListener, FolioR
 
     public void open(String bookPath){
 
-        ReadLocator readLocator = getLastReadLocator();
-        folioReader.setReadLocator(readLocator);
+        ReadLocator readLocator;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+        String jsonString = preferences.getString(this.identifier, null);
+        if(jsonString != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonString);
+                Locations locations = new Locations();
+                locations.setCfi(jsonObj.optString("cfi"));
+                readLocator = new ReadLocator(jsonObj.optString("bookId"), jsonObj.optString("href"), jsonObj.optLong("created"), locations);
+                folioReader.setReadLocator(readLocator);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         folioReader.setConfig(readerConfig.config, true)
                 .openBook(bookPath);
 
@@ -159,9 +180,33 @@ public class Reader  implements OnHighlightListener, ReadLocatorListener, FolioR
         Log.e("readLocator","readLocator progress:"+readLocator.getLocations().getProgression());
         Log.e("readLocator","readLocator id:"+readLocator.getLocations().getId());
 
+        String bookId = readLocator.getBookId();
+        String cfi = readLocator.getLocations().getCfi();
+        long created = readLocator.getCreated();
+        String href = readLocator.getHref();
+
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("bookId",bookId);
+            obj.put("cfi", cfi);
+            obj.put("created", created);
+            obj.put("href", href);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString(this.identifier, obj.toString());
+        edit.apply();
+
+
+
         if (pageEventSink != null){
             pageEventSink.success(readLocator.getLocations().getXpath());
         }
+        
     }
 
 
