@@ -283,26 +283,13 @@ extension Highlight {
         return updatedContent
     }
 
-//     /// Remove a Highlight from HTML by ID
-//     ///
-//     /// - Parameters:
-//     ///   - page: The page containing the HTML.
-//     ///   - highlightId: The ID to be removed
-//     /// - Returns: The removed id
-//     public static func removeFromHTMLById(withinPage page: FolioReaderPage?, highlightId: String,completionHandler:@escaping (String?)->Void){
-//         guard let currentPage = page else { return }
-        
-// //        if let removedId = currentPage.webView?.js("removeHighlightById('\(highlightId)')") {
-// //            return removedId
-// //        } else {
-// //            print("Error removing Highlight from page")
-// //            return nil
-// //        }
-        
-//         currentPage.webView?.js("removeHighlightById('\(highlightId)')", completionHandler: completionHandler)
-//     }
-    
-        @discardableResult public static func removeFromHTMLById(withinPage page: FolioReaderPage?, highlightId: String) -> String? {
+    /// Remove a Highlight from HTML by ID
+    ///
+    /// - Parameters:
+    ///   - page: The page containing the HTML.
+    ///   - highlightId: The ID to be removed
+    /// - Returns: The removed id
+    @discardableResult public static func removeFromHTMLById(withinPage page: FolioReaderPage?, highlightId: String) -> String? {
         guard let currentPage = page else { return nil }
         
         if let removedId = currentPage.webView?.js("removeHighlightById('\(highlightId)')") {
@@ -312,7 +299,7 @@ extension Highlight {
             return nil
         }
     }
-
+    
     /**
      Remove span tag before store the highlight, this span is added on JavaScript.
      <span class=\"sentence\"></span>
