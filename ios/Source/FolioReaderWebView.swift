@@ -43,7 +43,9 @@ open class FolioReaderWebView: WKWebView {
         self.readerContainer = readerContainer
 
         let configuration = WKWebViewConfiguration()
-        configuration.dataDetectorTypes = .link
+        if #available(iOS 10.0, *) {
+            configuration.dataDetectorTypes = .link
+        }
         super.init(frame: frame, configuration: configuration)
         FolioReaderScript.cssInjection.addIfNeeded(to: self)
         FolioReaderScript.bridgeJS.addIfNeeded(to: self)

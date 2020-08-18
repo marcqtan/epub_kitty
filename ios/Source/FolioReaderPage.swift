@@ -84,7 +84,7 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
             webView?.scrollView.showsVerticalScrollIndicator = false
             webView?.scrollView.showsHorizontalScrollIndicator = false
             webView?.backgroundColor = .clear
-            webView?.scalesPageToFit=true
+            webView?.scrollView.zoomScale=2.0
             self.contentView.addSubview(webView!)
         }
         webView?.navigationDelegate = self
