@@ -9,6 +9,7 @@
 import UIKit
 import ZFDragableModalTransition
 import WebKit
+import SwiftSoup
 
 /// Protocol which is used from `FolioReaderCenter`s.
 @objc public protocol FolioReaderCenterDelegate: class {
@@ -467,7 +468,16 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
         
         // Inject viewport
-        let viewportTag = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, shrink-to-fit=no\">"
+        let viewportTag = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, shrink-to-fit=no\">\n" +
+            "<script>\n" +
+            "   function p(s) {\n" +
+            "       let a = $('#player')[0];\n" +
+            "       a.setAttribute('src',s);\n" +
+            "       a.load();\n" +
+            "       a.play();\n" +
+            "       $(a).show();\n" +
+            "   }\n" +
+            "</script>\n"
 
         let toInject = "\n\(viewportTag)\n</head>"
         html = html.replacingOccurrences(of: "</head>", with: toInject)
@@ -490,7 +500,30 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let modifiedHtmlContent = self.delegate?.htmlContentForPage?(cell, htmlContent: html) {
             html = modifiedHtmlContent
         }
+        
+        do {
+            let doc: Document = try SwiftSoup.parse(html, "", Parser.xmlParser())
+            let audios: Elements = try doc.getElementsByTag("audio")
+            if (audios.isEmpty() != true) {
+                let rects: Elements = try doc.getElementsByTag("rect")
+                for i in 0..<rects.size() {
+                    let src = try audios.get(i).attr("src")
+                    try rects.get(i).attr("onclick", "p('\(src)')")
+                }
 
+                if (rects.isEmpty() != true) {
+                    try doc.getElementsByTag("body").append("<audio id=\"player\" controls=\"controls\" style=\"width:100%; " +
+                            "margin: 0 auto;display: table;\"" + "\n</body>");
+                }
+
+                html = try doc.html()
+            }
+        } catch Exception.Error(_, let message) {
+            print(message)
+        } catch {
+            print("error")
+        }
+        
         cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: resource.fullHref.deletingLastPathComponent))
         return cell
     }

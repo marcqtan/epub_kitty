@@ -42,6 +42,7 @@ A new flutter plugin project.
   s.dependency 'AEXML', '4.3.3'
   s.dependency 'FontBlaster', '4.1.0'
   s.dependency 'RealmSwift', '3.17.3'
+  s.dependency 'SwiftSoup', '1.7.4'
   
   s.ios.deployment_target = '9.0'
 end
