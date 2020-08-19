@@ -41,12 +41,14 @@ public class Reader  implements OnHighlightListener, ReadLocatorListener, FolioR
     private EventChannel.EventSink pageEventSink;
     private BinaryMessenger messenger;
     private String identifier;
+    private String custId;
 
     private static final String PAGE_CHANNEL = "com.xiaofwang.epub_reader/page";
 
-    Reader(Context context, BinaryMessenger messenger,ReaderConfig config, String identifier){
+    Reader(Context context, BinaryMessenger messenger,ReaderConfig config, String identifier, String custId){
         this.context = context;
         this.identifier = identifier;
+        this.custId = custId;
         readerConfig = config;
         getHighlightsAndSave();
 
@@ -61,8 +63,9 @@ public class Reader  implements OnHighlightListener, ReadLocatorListener, FolioR
     public void open(String bookPath){
 
         ReadLocator readLocator;
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+        SharedPreferences preferences = context.getSharedPreferences(this.custId, Context.MODE_PRIVATE);
         String jsonString = preferences.getString(this.identifier, null);
+       
         if(jsonString != null) {
             try {
                 JSONObject jsonObj = new JSONObject(jsonString);
@@ -73,6 +76,8 @@ public class Reader  implements OnHighlightListener, ReadLocatorListener, FolioR
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else {
+            folioReader.setReadLocator(null);
         }
         folioReader.setConfig(readerConfig.config, true)
                 .openBook(bookPath);
@@ -196,12 +201,10 @@ public class Reader  implements OnHighlightListener, ReadLocatorListener, FolioR
             e.printStackTrace();
         }
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+        SharedPreferences preferences = context.getSharedPreferences(this.custId, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = preferences.edit();
         edit.putString(this.identifier, obj.toString());
         edit.apply();
-
-
 
         if (pageEventSink != null){
             pageEventSink.success(readLocator.getLocations().getXpath());

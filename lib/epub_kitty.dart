@@ -20,10 +20,11 @@ class EpubKitty{
   }
 
   /// @param bookPath the local path in cache
-  static void open(String bookPath, String identifier) async {
+  static void open(String bookPath, String identifier, String custId) async {
     Map<String,dynamic> agrs = {
       "bookPath":bookPath,
       "identifier":identifier,
+      "custId":custId,
     };
     await _channel.invokeMethod('open',agrs);
   }
