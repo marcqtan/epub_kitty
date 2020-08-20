@@ -144,8 +144,10 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
     func loadHTMLString(_ htmlContent: String!, baseURL: URL!) {
         // Insert the stored highlights to the HTML
         let tempHtmlContent = htmlContentWithInsertHighlights(htmlContent)
+        let itemFolder = baseURL.deletingLastPathComponent()
         // Load the html into the webview
         webView?.alpha = 0
+        webView?.loadFileURL(itemFolder, allowingReadAccessTo: itemFolder)
         webView?.loadHTMLString(tempHtmlContent, baseURL: baseURL)
     }
 

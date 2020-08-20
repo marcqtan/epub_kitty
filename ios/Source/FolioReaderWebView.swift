@@ -43,8 +43,12 @@ open class FolioReaderWebView: WKWebView {
         self.readerContainer = readerContainer
 
         let configuration = WKWebViewConfiguration()
+        configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         if #available(iOS 10.0, *) {
             configuration.dataDetectorTypes = .link
+        } else {
+            // Fallback on earlier versions
+            assertionFailure("unsupported iOS version")
         }
         super.init(frame: frame, configuration: configuration)
         FolioReaderScript.cssInjection.addIfNeeded(to: self)
