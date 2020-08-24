@@ -10,7 +10,7 @@ import UIKit
 import FontBlaster
 
 /// Reader container
-open class FolioReaderContainer: UIViewController {
+open class FolioReaderContainer: UIViewController, UIGestureRecognizerDelegate {
     var shouldHideStatusBar = true
     var shouldRemoveEpub = true
     
@@ -109,9 +109,23 @@ open class FolioReaderContainer: UIViewController {
     }
 
     // MARK: - View life cicle
+    
+    
 
     override open func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.red
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FolioReaderContainer.tapGesture))
+        tapGesture.numberOfTapsRequired = 1
+        tapGesture.delegate = self
+        view.addGestureRecognizer(tapGesture)
+        
+        let scrollG = UISwipeGestureRecognizer(target: self, action: #selector(FooContainer.tapGesture))
+        scrollG.direction = .up
+        scrollG.numberOfTouchesRequired = 1
+        scrollG.delegate = self
+        view.addGestureRecognizer(scrollG)
 
         let canChangeScrollDirection = self.readerConfig.canChangeScrollDirection
         self.readerConfig.canChangeScrollDirection = self.readerConfig.isDirection(canChangeScrollDirection, canChangeScrollDirection, false)
@@ -178,10 +192,19 @@ open class FolioReaderContainer: UIViewController {
             }
         }
     }
+    
+    private func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                   shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        true
+    }
+    
+    @objc func tapGesture() {
+        debugPrint("catch tap gesture but ignoring")
+    }
 
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
         if (self.errorOnLoad == true) {
             self.dismiss()
         }
