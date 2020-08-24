@@ -116,16 +116,34 @@ open class FolioReaderContainer: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.red
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FolioReaderContainer.tapGesture))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FolioReaderContainer.captureGesture))
         tapGesture.numberOfTapsRequired = 1
         tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
         
-        let scrollG = UISwipeGestureRecognizer(target: self, action: #selector(FooContainer.tapGesture))
-        scrollG.direction = .up
-        scrollG.numberOfTouchesRequired = 1
-        scrollG.delegate = self
-        view.addGestureRecognizer(scrollG)
+        let scrollUpGesture = UISwipeGestureRecognizer(target: self, action: #selector(FolioReaderContainer.captureGesture))
+        scrollUpGesture.direction = .up
+        scrollUpGesture.numberOfTouchesRequired = 1
+        scrollUpGesture.delegate = self
+        view.addGestureRecognizer(scrollUpGesture)
+        
+        let scrollDownGesture = UISwipeGestureRecognizer(target: self, action: #selector(FolioReaderContainer.captureGesture))
+        scrollDownGesture.direction = .up
+        scrollDownGesture.numberOfTouchesRequired = 1
+        scrollDownGesture.delegate = self
+        view.addGestureRecognizer(scrollDownGesture)
+        
+        let scrollLeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(FolioReaderContainer.captureGesture))
+        scrollLeftGesture.direction = .up
+        scrollLeftGesture.numberOfTouchesRequired = 1
+        scrollLeftGesture.delegate = self
+        view.addGestureRecognizer(scrollLeftGesture)
+        
+        let scrollRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(FolioReaderContainer.captureGesture))
+        scrollRightGesture.direction = .up
+        scrollRightGesture.numberOfTouchesRequired = 1
+        scrollRightGesture.delegate = self
+        view.addGestureRecognizer(scrollRightGesture)
 
         let canChangeScrollDirection = self.readerConfig.canChangeScrollDirection
         self.readerConfig.canChangeScrollDirection = self.readerConfig.isDirection(canChangeScrollDirection, canChangeScrollDirection, false)
@@ -198,7 +216,7 @@ open class FolioReaderContainer: UIViewController, UIGestureRecognizerDelegate {
         true
     }
     
-    @objc func tapGesture() {
+    @objc func captureGesture() {
         debugPrint("catch tap gesture but ignoring")
     }
 
