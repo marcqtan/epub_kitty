@@ -154,7 +154,6 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
         let fontBigNormal = fontBig?.imageTintColor(normalColor)?.withRenderingMode(.alwaysOriginal)
         
         dayButton = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.width/2, height: 55))
-        dayButton.translatesAutoresizingMaskIntoConstraints = false
         dayButton.setTitle("Day", for: .normal)
         dayButton.setTitleColor(self.folioReader.nightMode ? normalColor: selectedColor, for: .normal)
         dayButton.setImage(self.folioReader.nightMode ? sunNormal: sunSelected, for: .normal)
@@ -169,7 +168,6 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
         menuView.addSubview(dayButton)
         
         darkButton = UIButton(frame: CGRect(x: view.frame.width/2, y: 0, width: view.frame.width/2, height: 55))
-        darkButton.translatesAutoresizingMaskIntoConstraints = false
         darkButton.setTitle("Dark", for: .normal)
         darkButton.setTitleColor(self.folioReader.nightMode ? selectedColor: normalColor, for: .normal)
         darkButton.setImage(self.folioReader.nightMode ? moonSelected: moonNormal, for: .normal)
@@ -279,7 +277,6 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
         
         
         verticalButton = UIButton(frame: CGRect(x: 0, y: line3.frame.origin.y, width: view.frame.width/2, height: 55))
-        verticalButton.translatesAutoresizingMaskIntoConstraints = false
         verticalButton.setTitle("Vertical", for: .normal)
         verticalButton.imageEdgeInsets.left = -20
         
@@ -291,7 +288,6 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
         menuView.addSubview(verticalButton)
         
         horizontalButton = UIButton(frame: CGRect(x: view.frame.width/2, y: line3.frame.origin.y, width: view.frame.width/2, height: 55))
-        horizontalButton.translatesAutoresizingMaskIntoConstraints = false
         horizontalButton.setTitle("Horizontal", for: .normal)
         horizontalButton.imageEdgeInsets.left = -20
         
