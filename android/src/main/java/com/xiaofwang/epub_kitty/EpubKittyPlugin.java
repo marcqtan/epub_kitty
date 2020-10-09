@@ -48,8 +48,10 @@ public class EpubKittyPlugin implements MethodCallHandler {
 
       Map<String,Object> arguments = (Map<String, Object>) call.arguments;
       String bookPath = arguments.get("bookPath").toString();
+      String identifier = arguments.get("identifier").toString();
+      String custId = arguments.get("custId").toString();
 
-      reader = new Reader(context,messenger,config);
+      reader = new Reader(context,messenger,config, identifier, custId);
       reader.open(bookPath);
 
     }else if(call.method.equals("close")){
