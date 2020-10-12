@@ -507,8 +507,19 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             if (audios.isEmpty() != true) {
                 let rects: Elements = try doc.getElementsByTag("rect")
                 for i in 0..<rects.size() {
-                    let src = try audios.get(i).attr("src")
-                    try rects.get(i).attr("onclick", "p('\(src)')")
+                    for y in 0..<audios.size() {
+                        let id = try audios.get(y).attr("id")
+                        let onclick = try rects.get(i).attr("onclick")
+                        if(onclick.split(separator: "\"").count > 1) {
+                            var rectAudioId = onclick.split(separator: "\"")[1]
+                            rectAudioId.removeFirst()
+                            if(id == rectAudioId) {
+                                let src = try audios.get(y).attr("src")
+                                try rects.get(i).attr("onclick", "p('\(src)')")
+                                break
+                            }
+                        }
+                    }
                 }
 
                 if (rects.isEmpty() != true) {
