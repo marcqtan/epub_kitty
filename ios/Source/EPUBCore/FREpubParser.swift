@@ -93,6 +93,15 @@ class FREpubParser: NSObject, SSZipArchiveDelegate {
             bookBasePath = kApplicationDocumentsDirectory
         }
 
+        bookBasePath = bookBasePath.appendingPathComponent("dlc")
+        if !fileManager.fileExists(atPath: bookBasePath) {
+            do {
+                try fileManager.createDirectory(atPath: bookBasePath, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print(error.localizedDescription);
+            }
+        }
+        
         bookBasePath = bookBasePath.appendingPathComponent(bookName)
 
         guard fileManager.fileExists(atPath: withEpubPath) else {
