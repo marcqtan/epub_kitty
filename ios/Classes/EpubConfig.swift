@@ -32,7 +32,6 @@ class EpubConfig: NSObject {
     
     private func readerConfiguration() {
         self.config.shouldHideNavigationOnTap = true
-        self.config.scrollDirection = self.scrollDirection
         self.config.enableTTS = false
         self.config.displayTitle = true
         self.config.allowSharing = self.allowSharing
