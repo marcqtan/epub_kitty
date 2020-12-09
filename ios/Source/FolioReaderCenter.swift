@@ -523,8 +523,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                 }
 
                 if (rects.isEmpty() != true) {
-                    try doc.getElementsByTag("body").append("<audio id=\"player\" controls=\"controls\" style=\"width:100%; " +
-                            "margin: 0 auto;display: table;\"" + "\n</body>");
+                    try doc.getElementsByTag("body").append("<audio id=\"player\" controls=\"controls\" style=\"position:fixed; " +
+                            "left:50%; bottom:20px; transform: translate(-50%, -50%); width:80%; margin:0 auto;\"" + "\n</body>");
                 }
 
                 html = try doc.html()
