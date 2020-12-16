@@ -38,6 +38,7 @@ class EpubConfig: NSObject {
         self.config.tintColor = self.tintColor
         self.config.canChangeFontStyle = false
         self.config.canChangeScrollDirection = false
+        self.config.hidePageIndicator = true
         // Custom sharing quote background
         self.config.quoteCustomBackgrounds = []
         if let image = UIImage(named: "demo-bg") {
