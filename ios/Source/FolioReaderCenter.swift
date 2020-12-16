@@ -468,7 +468,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
         
         // Inject viewport
-        let viewportTag = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, shrink-to-fit=no\">\n" +
+        let viewportTag = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover, shrink-to-fit=no\">\n" +
             "<script>\n" +
             "   function p(s) {\n" +
             "       let a = $('#player')[0];\n" +
@@ -524,7 +524,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
                 if (rects.isEmpty() != true) {
                     try doc.getElementsByTag("body").append("<audio id=\"player\" controls=\"controls\" style=\"position:fixed; " +
-                            "bottom:30px; width:80%;left:50%;margin-left:-40%;\"" + "\n</body>");
+                            "bottom:calc(env(safe-area-inset-bottom, 0px) + 30px); width:80%;left:50%;margin-left:-40%;\"" + "\n</body>");
                 }
 
                 html = try doc.html()
