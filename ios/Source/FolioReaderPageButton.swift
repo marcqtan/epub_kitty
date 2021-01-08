@@ -21,7 +21,7 @@ class FolioReaderPageButton: UIButton {
 
         super.init(frame: frame)
 
-        backgroundColor = .yellow//.clear
+        backgroundColor = .clear
         if(isNext) {
             addTarget(self, action:#selector(self.nextButton), for: .touchUpInside)
         } else {
