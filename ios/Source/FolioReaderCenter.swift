@@ -75,6 +75,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     var nextButtonView: FolioReaderPageButton?
     var prevButtonView: FolioReaderPageButton?
+    var slideBar: SlideBarView?
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -214,6 +215,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 //        if let scrollScrubber = scrollScrubber {
 //            view.addSubview(scrollScrubber.slider)
 //        }
+        
+        guard let readerContainer = readerContainer else { return }
+        self.slideBar = SlideBarView(frame: frameForSlideBar(), withReaderContainer: readerContainer)
+        self.slideBar?.delegate = self
+        if let slideBar = slideBar {
+            view.addSubview(slideBar.slider)
+        }
     }
 
     override open func viewWillAppear(_ animated: Bool) {
@@ -250,6 +258,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     fileprivate func updateSubviewFrames() {
         self.pageIndicatorView?.frame = self.frameForPageIndicatorView()
         self.scrollScrubber?.frame = self.frameForScrollScrubber()
+        self.slideBar?.frame = self.frameForSlideBar()
         self.nextButtonView?.frame = self.frameForNextButton()
         self.prevButtonView?.frame = self.frameForPrevButton()
     }
@@ -267,6 +276,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     fileprivate func frameForScrollScrubber() -> CGRect {
         let scrubberY: CGFloat = ((self.readerConfig.shouldHideNavigationOnTap == true || self.readerConfig.hideBars == true) ? 50 : 74)
         return CGRect(x: self.pageWidth + 10, y: scrubberY, width: 40, height: (self.pageHeight - 100))
+    }
+    
+    fileprivate func frameForSlideBar() -> CGRect {
+        let scrubberY: CGFloat = ((self.readerConfig.shouldHideNavigationOnTap == true || self.readerConfig.hideBars == true) ? 50 : 74)
+        return CGRect(x: screenBounds.size.width - 20, y: scrubberY, width: 40, height: (self.pageHeight - 100))
     }
     
     fileprivate func frameForNextButton() -> CGRect {
@@ -328,6 +342,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         self.collectionView.reloadData()
         self.configureNavBarButtons()
         self.setCollectionViewProgressiveDirection()
+        
+        slideBar?.setMaximumVal()
 
         if self.readerConfig.loadSavedPositionForCurrentBook {
             guard let position = folioReader.savedPositionForCurrentBook, let pageNumber = position["pageNumber"] as? Int, pageNumber > 0 else {
@@ -338,6 +354,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.changePageWith(page: pageNumber)
             self.currentPageNumber = pageNumber
         }
+        
     }
 
     // MARK: Change page progressive direction
@@ -713,6 +730,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
 
         scrollScrubber?.setSliderVal()
+        slideBar?.setSliderVal()
         currentPage.webView?.js("getReadingTime()") { readingTime in
             self.pageIndicatorView?.totalMinutes = Int(readingTime ?? "0")!
             self.pagesForCurrentPage(currentPage)
@@ -1514,6 +1532,7 @@ extension FolioReaderCenter: FolioReaderPageDelegate {
     public func pageTap(_ recognizer: UITapGestureRecognizer) {
         // Pass the event to the centers `pageDelegate`
         pageDelegate?.pageTap?(recognizer)
+        slideBar?.toggleSlideView()
     }
     
 }
