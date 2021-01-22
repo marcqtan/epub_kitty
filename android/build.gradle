@@ -38,7 +38,7 @@ dependencies {
     configurations.matching { it.name == '_internal_aapt2_binary' }.all { config -> config.resolutionStrategy.eachDependency { details -> details.useVersion("3.3.2-5309881") } }
     //implementation "com.folioreader:folioreader:0.5.4"
     //
-    implementation 'com.github.marcqtan:FolioReader-Android:832b2f4d87a9a191f35a02bb958b4dae5bb9b7e1'
+    implementation 'com.github.marcqtan:FolioReader-Android:f7a5df96943c05012eff6832269cb7a3a9d12831'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.8'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.7'
 }
