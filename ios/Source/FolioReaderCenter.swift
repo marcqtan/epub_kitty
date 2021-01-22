@@ -226,7 +226,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         configureNavBar()
 
         // Update pages
@@ -279,16 +278,15 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     fileprivate func frameForSlideBar() -> CGRect {
-        let scrubberY: CGFloat = ((self.readerConfig.shouldHideNavigationOnTap == true || self.readerConfig.hideBars == true) ? 50 : 74)
-        return CGRect(x: screenBounds.size.width - 20, y: scrubberY, width: 40, height: (self.pageHeight - 100))
+        return CGRect(x: screenBounds.size.width - 5, y: screenBounds.size.height/2 - 200, width: 40, height: (self.pageHeight - 200))
     }
     
     fileprivate func frameForNextButton() -> CGRect {
-        return CGRect(x: screenBounds.size.width - 20, y: 0, width: 20, height: screenBounds.size.height)
+        return CGRect(x: 0, y: screenBounds.size.height - 40, width: screenBounds.size.width, height: 40)
     }
     
     fileprivate func frameForPrevButton() -> CGRect {
-        return CGRect(x: 0, y: 0, width: 20, height: screenBounds.size.height)
+        return CGRect(x: 0, y: 0, width: screenBounds.size.width, height: 60)
     }
 
     func configureNavBar() {
