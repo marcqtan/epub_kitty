@@ -282,7 +282,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     fileprivate func frameForNextButton() -> CGRect {
-        return CGRect(x: 0, y: screenBounds.size.height - 40, width: screenBounds.size.width, height: 40)
+        return CGRect(x: 0, y: screenBounds.size.height - (screenBounds.size.height * 0.10), width: screenBounds.size.width, height: screenBounds.size.height * 0.10)
     }
     
     fileprivate func frameForPrevButton() -> CGRect {
@@ -565,7 +565,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
                 if (rects.isEmpty() != true) {
                     try doc.getElementsByTag("body").append("<audio id=\"player\" controls=\"controls\" style=\"position:fixed; " +
-                            "bottom:calc(env(safe-area-inset-bottom, 0px) + 30px); width:80%;left:50%;margin-left:-40%;\"" + "\n</body>");
+                            "bottom:calc(env(safe-area-inset-bottom, 0px) + 100px); width:80%;left:50%;margin-left:-40%;\"" + "\n</body>");
                 }
 
                 html = try doc.html()
