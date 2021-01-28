@@ -286,7 +286,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     fileprivate func frameForPrevButton() -> CGRect {
-        return CGRect(x: 0, y: 0, width: screenBounds.size.width, height: 60)
+        return CGRect(x: 0, y: 0, width: screenBounds.size.width, height: screenBounds.size.height * 0.10)
     }
 
     func configureNavBar() {
