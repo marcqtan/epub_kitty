@@ -56,6 +56,24 @@ open class FolioReaderContainer: UIViewController, UIGestureRecognizerDelegate {
             self.initialization()
         }
     }
+    
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+       get {
+           return UIInterfaceOrientationMask.portrait
+       }
+    }
+
+    open override var shouldAutorotate: Bool {
+       get {
+           return false
+       }
+    }
+
+    open override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+       get {
+           return UIInterfaceOrientation.portrait
+       }
+    }
 
     required public init?(coder aDecoder: NSCoder) {
         // When a FolioReaderContainer object is instantiated from the storyboard this function is called before.
