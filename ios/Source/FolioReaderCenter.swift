@@ -519,8 +519,18 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             "       $(a).show();\n" +
             "   }\n" +
             "</script>\n"
-
-        let toInject = "\n\(viewportTag)\n</head>"
+        
+        let jsFilePath = Bundle.frameworkBundle().path(forResource: "Bridge", ofType: "js")
+        let cssFilePath = Bundle.frameworkBundle().path(forResource: "Style", ofType: "css")
+        let cssTag = "<link rel=\"stylesheet\" type=\"text/css\" href=\"\(cssFilePath!)\">"
+        let jsTag = "<script type=\"text/javascript\" src=\"\(jsFilePath!)\"></script>"
+        
+        // Inject dynamic style
+        let overflow = cell.webView?.cssOverflowProperty ?? "scroll"
+        let htmlList = "html{overflow:\(overflow)}"
+        let styleTag = "<style type=\"text/css\">\(htmlList)</style>"
+        
+        let toInject = "\n\(cssTag)\n\(jsTag)\n\(styleTag)\n\(viewportTag)\n</head>"
         html = html.replacingOccurrences(of: "</head>", with: toInject)
 
         // Font class name

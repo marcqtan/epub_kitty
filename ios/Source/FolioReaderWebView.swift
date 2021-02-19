@@ -16,11 +16,7 @@ open class FolioReaderWebView: WKWebView {
     var isShare = false
     var isOneWord = false
     
-    fileprivate(set) var cssOverflowProperty = "scroll" {
-        didSet {
-            FolioReaderScript.cssInjection(overflow: cssOverflowProperty).addIfNeeded(to: self)
-        }
-    }
+    fileprivate(set) var cssOverflowProperty = "scroll"
 
     fileprivate weak var readerContainer: FolioReaderContainer?
 
@@ -51,8 +47,8 @@ open class FolioReaderWebView: WKWebView {
             assertionFailure("unsupported iOS version")
         }
         super.init(frame: frame, configuration: configuration)
-        FolioReaderScript.cssInjection.addIfNeeded(to: self)
-        FolioReaderScript.bridgeJS.addIfNeeded(to: self)
+        //FolioReaderScript.cssInjection.addIfNeeded(to: self)
+        //FolioReaderScript.bridgeJS.addIfNeeded(to: self)
     }
 
     required public init?(coder aDecoder: NSCoder) {
