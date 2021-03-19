@@ -73,8 +73,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var pageWidth: CGFloat = 0.0
     var pageHeight: CGFloat = 0.0
     
-    var nextButtonView: FolioReaderPageButton?
-    var prevButtonView: FolioReaderPageButton?
     var slideBar: SlideBarView?
 
     fileprivate var screenBounds: CGRect!
@@ -195,18 +193,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                 view.addSubview(pageIndicatorView)
             }
         }
-        
-        nextButtonView = FolioReaderPageButton(frame: frameForNextButton(), readerConfig: readerConfig, folioReader: folioReader, isNext: true)
-        
-        if let nextButtonView = nextButtonView {
-            view.addSubview(nextButtonView)
-        }
-                
-        prevButtonView = FolioReaderPageButton(frame: frameForPrevButton(), readerConfig: readerConfig, folioReader: folioReader, isNext: false)
-        
-        if let prevButtonView = prevButtonView {
-            view.addSubview(prevButtonView)
-        }
 
         //hide scrollbar
 //        guard let readerContainer = readerContainer else { return }
@@ -258,8 +244,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         self.pageIndicatorView?.frame = self.frameForPageIndicatorView()
         self.scrollScrubber?.frame = self.frameForScrollScrubber()
         self.slideBar?.frame = self.frameForSlideBar()
-        self.nextButtonView?.frame = self.frameForNextButton()
-        self.prevButtonView?.frame = self.frameForPrevButton()
     }
 
     fileprivate func frameForPageIndicatorView() -> CGRect {
@@ -279,14 +263,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     fileprivate func frameForSlideBar() -> CGRect {
         return CGRect(x: screenBounds.size.width - 5, y: screenBounds.size.height/2 - 200, width: 40, height: (self.pageHeight - 200))
-    }
-    
-    fileprivate func frameForNextButton() -> CGRect {
-        return CGRect(x: 0, y: screenBounds.size.height - (screenBounds.size.height * 0.10), width: screenBounds.size.width, height: screenBounds.size.height * 0.10)
-    }
-    
-    fileprivate func frameForPrevButton() -> CGRect {
-        return CGRect(x: 0, y: 0, width: screenBounds.size.width, height: screenBounds.size.height * 0.10)
     }
 
     func configureNavBar() {
@@ -575,7 +551,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
                 if (rects.isEmpty() != true) {
                     try doc.getElementsByTag("body").append("<audio id=\"player\" controls=\"controls\" style=\"position:fixed; " +
-                            "bottom:calc(env(safe-area-inset-bottom, 0px) + 100px); width:80%;left:50%;margin-left:-40%;\"" + "\n</body>");
+                            "bottom:calc(env(safe-area-inset-bottom, 0px) + 30px); width:80%;left:50%;margin-left:-40%;\"" + "\n</body>");
                 }
 
                 html = try doc.html()
