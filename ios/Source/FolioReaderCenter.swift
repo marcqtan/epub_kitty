@@ -532,24 +532,28 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             let doc: Document = try SwiftSoup.parse(html, "", Parser.xmlParser())
             let audios: Elements = try doc.getElementsByTag("audio")
             if (audios.isEmpty() != true) {
-                let rects: Elements = try doc.getElementsByTag("rect")
-                for i in 0..<rects.size() {
-                    for y in 0..<audios.size() {
-                        let id = try audios.get(y).attr("id")
-                        let onclick = try rects.get(i).attr("onclick")
-                        if(onclick.split(separator: "\"").count > 1) {
-                            var rectAudioId = onclick.split(separator: "\"")[1]
-                            rectAudioId.removeFirst()
-                            if(id == rectAudioId) {
-                                let src = try audios.get(y).attr("src")
-                                try rects.get(i).attr("onclick", "p('\(src)')")
-                                break
+                let elements: Elements = try doc.select("[onclick]") //find all elements with onclick.play
+                var showPlayer: Bool = false
+                for i in 0..<elements.size() {
+                    let onclick = try elements.get(i).attr("onclick")
+                    if (onclick.contains("play()")) {
+                        showPlayer = true
+                        for y in 0..<audios.size() {
+                            let id = try audios.get(y).attr("id")
+                            if(onclick.split(separator: "\"").count > 1) {
+                                var rectAudioId = onclick.split(separator: "\"")[1]
+                                rectAudioId.removeFirst()
+                                if(id == rectAudioId) {
+                                    let src = try audios.get(y).attr("src")
+                                    try elements.get(i).attr("onclick", "p('\(src)')")
+                                    break
+                                }
                             }
                         }
                     }
                 }
 
-                if (rects.isEmpty() != true) {
+                if (showPlayer) {
                     try doc.getElementsByTag("body").append("<audio id=\"player\" controls=\"controls\" style=\"position:fixed; " +
                             "bottom:calc(env(safe-area-inset-bottom, 0px) + 30px); width:80%;left:50%;margin-left:-40%;\"" + "\n</body>");
                 }
