@@ -92,7 +92,7 @@ class SlideBarView: NSObject, UIScrollViewDelegate {
     
 
     func setSliderVal() {
-        slider.value = Float(folioReader.readerCenter!.currentPageNumber)
+        slider.value = Float(folioReader.readerCenter?.currentPageNumber ?? 0)
     }
     
     func setMaximumVal() {
